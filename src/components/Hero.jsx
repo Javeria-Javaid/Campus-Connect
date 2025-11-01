@@ -38,7 +38,7 @@ const Hero = () => {
                     </div>
                 </div>
 
-                {/* Right Content - Illustration/Image */}
+                {/* Right Content - Logo in Circle */}
                 <div className="hero-visual">
                     <div className="hero-image">
                         <div className="floating-card card-1">
@@ -54,7 +54,14 @@ const Hero = () => {
                             <span>💬 Chat</span>
                         </div>
                         <div className="main-illustration">
-                            <div className="network-graphic"></div>
+                            {/* Logo Container */}
+                            <div className="logo-container">
+                                <img
+                                    src="/favicon.png"
+                                    alt="CampusConnect Logo"
+                                    className="hero-logo"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
