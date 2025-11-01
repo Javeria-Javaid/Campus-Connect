@@ -1,4 +1,4 @@
-import './Hero.css'
+import './Hero.css';
 
 const Hero = () => {
     return (
@@ -10,18 +10,17 @@ const Hero = () => {
                         Connect, Collaborate &
                         <span className="highlight"> Thrive</span> on Campus
                     </h1>
+
                     <p className="hero-subtitle">
-                        Your all-in-one platform for campus life. Connect with peers,
-                        discover events, join clubs, and make the most of your university experience.
+                        Your all-in-one platform for campus life — connect with peers, discover events,
+                        join clubs, and make the most of your university experience.
                     </p>
+
                     <div className="hero-buttons">
-                        <button className="hero-btn primary">
-                            Get Started
-                        </button>
-                        <button className="hero-btn secondary">
-                            Watch Demo
-                        </button>
+                        <button className="hero-btn primary">Get Started</button>
+                        <button className="hero-btn secondary">Watch Demo</button>
                     </div>
+
                     <div className="hero-stats">
                         <div className="stat">
                             <span className="stat-number">10K+</span>
@@ -38,36 +37,22 @@ const Hero = () => {
                     </div>
                 </div>
 
-                {/* Right Content - Logo in Circle */}
+                {/* Right Visual */}
                 <div className="hero-visual">
-                    <div className="hero-image">
-                        <div className="floating-card card-1">
-                            <span>🎓 Student Profiles</span>
+                    <div className="main-illustration">
+                        <div className="logo-container">
+                            <img src="/favicon.png" alt="CampusConnect Logo" className="hero-logo" />
                         </div>
-                        <div className="floating-card card-2">
-                            <span>📅 Events</span>
-                        </div>
-                        <div className="floating-card card-3">
-                            <span>👥 Clubs</span>
-                        </div>
-                        <div className="floating-card card-4">
-                            <span>💬 Chat</span>
-                        </div>
-                        <div className="main-illustration">
-                            {/* Logo Container */}
-                            <div className="logo-container">
-                                <img
-                                    src="/favicon.png"
-                                    alt="CampusConnect Logo"
-                                    className="hero-logo"
-                                />
-                            </div>
-                        </div>
+
+                        <div className="floating-card card-1">💼 Opportunities</div>
+                        <div className="floating-card card-2">🎯 Match Score</div>
+                        <div className="floating-card card-3">📊 Analytics</div>
+                        <div className="floating-card card-4">💬 Messaging</div>
                     </div>
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default Hero
+export default Hero;

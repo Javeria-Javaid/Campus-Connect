@@ -15,7 +15,7 @@ const Navbar = () => {
             <div className="nav-container">
                 {/* Logo Section */}
                 <a href="#home" className="nav-logo">
-                    <img src="favicon.png" alt="CampusConnect Logo" className="logo-image" />
+                    <img src="cc_logo.png" alt="CampusConnect Logo" className="logo-image" />
                     <span className="logo-text">CampusConnect</span>
                 </a>
 
