@@ -46,12 +46,12 @@
 
 .highlight {
     color: #0e8dad;
-    position: relative;
+   // position: relative;
 }
 
 .highlight::after {
     content: '';
-    position: absolute;
+   // position: absolute;
     bottom: 4px;
     left: 0;
     width: 100%;
@@ -113,7 +113,9 @@
 .hero-stats {
     display: flex;
     gap: 2rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Change from wrap to nowrap */
+    align-items: center; /* Center align items vertically */
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .stat-number {
