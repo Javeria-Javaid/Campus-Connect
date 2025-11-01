@@ -5,6 +5,7 @@ const Features = () => {
     const [currentSlide, setCurrentSlide] = useState(0)
     const sliderRef = useRef(null)
     const autoScrollRef = useRef(null)
+    const isManualScroll = useRef(false)
 
     const features = [
         {
@@ -45,20 +46,30 @@ const Features = () => {
         }
     ]
 
+    // Calculate slide width
+    const getSlideWidth = () => {
+        if (sliderRef.current && sliderRef.current.children.length > 0) {
+            const slide = sliderRef.current.children[0]
+            const style = window.getComputedStyle(slide)
+            const margin = parseFloat(style.marginRight) || 0
+            return slide.offsetWidth + margin
+        }
+        return 350 + 32 // Fallback: card width + gap
+    }
+
     // Auto-scroll functionality
     useEffect(() => {
         const startAutoScroll = () => {
             autoScrollRef.current = setInterval(() => {
-                if (sliderRef.current) {
+                if (sliderRef.current && !isManualScroll.current) {
                     const nextSlide = (currentSlide + 1) % features.length
-                    scrollToSlide(nextSlide)
+                    scrollToSlide(nextSlide, false) // Don't reset auto-scroll
                 }
-            }, 3000) // Change slide every 3 seconds
+            }, 3000)
         }
 
         startAutoScroll()
 
-        // Cleanup on unmount
         return () => {
             if (autoScrollRef.current) {
                 clearInterval(autoScrollRef.current)
@@ -66,49 +77,64 @@ const Features = () => {
         }
     }, [currentSlide, features.length])
 
-    const scrollToSlide = (index) => {
+    const scrollToSlide = (index, isManual = true) => {
         if (sliderRef.current) {
-            const slideWidth = sliderRef.current.children[0].offsetWidth + 32 // card width + gap
+            const slideWidth = getSlideWidth()
             sliderRef.current.scrollTo({
                 left: index * slideWidth,
                 behavior: 'smooth'
             })
             setCurrentSlide(index)
+
+            if (isManual) {
+                resetAutoScroll()
+            }
         }
     }
 
     const nextSlide = () => {
         const next = (currentSlide + 1) % features.length
-        scrollToSlide(next)
-        resetAutoScroll()
+        scrollToSlide(next, true)
     }
 
     const prevSlide = () => {
         const prev = currentSlide - 1 < 0 ? features.length - 1 : currentSlide - 1
-        scrollToSlide(prev)
-        resetAutoScroll()
+        scrollToSlide(prev, true)
     }
 
     const resetAutoScroll = () => {
-        // Reset auto-scroll timer when user interacts manually
+        isManualScroll.current = true
+
+        // Clear existing auto-scroll
         if (autoScrollRef.current) {
             clearInterval(autoScrollRef.current)
         }
+
         // Restart auto-scroll after 5 seconds of inactivity
         setTimeout(() => {
+            isManualScroll.current = false
             autoScrollRef.current = setInterval(() => {
-                const next = (currentSlide + 1) % features.length
-                scrollToSlide(next)
+                if (sliderRef.current && !isManualScroll.current) {
+                    const next = (currentSlide + 1) % features.length
+                    scrollToSlide(next, false)
+                }
             }, 3000)
         }, 5000)
     }
 
     const handleScroll = () => {
-        if (sliderRef.current) {
-            const slideWidth = sliderRef.current.children[0].offsetWidth + 32
-            const newSlide = Math.round(sliderRef.current.scrollLeft / slideWidth)
+        if (sliderRef.current && !isManualScroll.current) {
+            const slideWidth = getSlideWidth()
+            const scrollPosition = sliderRef.current.scrollLeft
+            const newSlide = Math.round(scrollPosition / slideWidth) % features.length
             setCurrentSlide(newSlide)
         }
+    }
+
+    // Handle manual scroll start
+    const handleManualScrollStart = () => {
+        isManualScroll.current = true
+        resetAutoScroll()
     }
 
     return (
@@ -137,8 +163,7 @@ const Features = () => {
                                 key={index}
                                 className={`indicator ${currentSlide === index ? 'active' : ''}`}
                                 onClick={() => {
-                                    scrollToSlide(index)
-                                    resetAutoScroll()
+                                    scrollToSlide(index, true)
                                 }}
                                 aria-label={`Go to feature ${index + 1}`}
                             />
@@ -160,18 +185,12 @@ const Features = () => {
                         className="features-slider"
                         ref={sliderRef}
                         onScroll={handleScroll}
+                        onTouchStart={handleManualScrollStart}
+                        onMouseDown={handleManualScrollStart}
+                        onWheel={handleManualScrollStart}
                     >
-                        {/* First set of features */}
                         {features.map((feature) => (
                             <div key={feature.id} className="feature-card">
-                                <div className="feature-icon">{feature.icon}</div>
-                                <h3 className="feature-title">{feature.title}</h3>
-                                <p className="feature-description">{feature.description}</p>
-                            </div>
-                        ))}
-                        {/* Duplicate set for seamless loop */}
-                        {features.map((feature) => (
-                            <div key={`${feature.id}-duplicate`} className="feature-card">
                                 <div className="feature-icon">{feature.icon}</div>
                                 <h3 className="feature-title">{feature.title}</h3>
                                 <p className="feature-description">{feature.description}</p>
@@ -180,7 +199,7 @@ const Features = () => {
                     </div>
                 </div>
 
-
+                {/* Auto-scroll status removed - only this part is removed */}
             </div>
         </section>
     )
