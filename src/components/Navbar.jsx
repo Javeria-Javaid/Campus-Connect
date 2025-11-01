@@ -3,9 +3,28 @@ import { useState, useEffect } from 'react';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
+    const [activeSection, setActiveSection] = useState('home');
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 50);
+
+            // Determine active section based on scroll position
+            const sections = ['home', 'features', 'how-it-works', 'contact'];
+            const current = sections.find(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    return rect.top <= 100 && rect.bottom >= 100;
+                }
+                return false;
+            });
+
+            if (current) {
+                setActiveSection(current);
+            }
+        };
+
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -23,6 +42,7 @@ const Navbar = () => {
     const handleNavClick = (e, sectionId) => {
         e.preventDefault();
         scrollToSection(sectionId);
+        setActiveSection(sectionId);
     };
 
     return (
@@ -43,7 +63,7 @@ const Navbar = () => {
                     <li>
                         <a
                             href="#home"
-                            className="nav-link active"
+                            className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}
                             onClick={(e) => handleNavClick(e, 'home')}
                         >
                             Home
@@ -52,7 +72,7 @@ const Navbar = () => {
                     <li>
                         <a
                             href="#features"
-                            className="nav-link"
+                            className={`nav-link ${activeSection === 'features' ? 'active' : ''}`}
                             onClick={(e) => handleNavClick(e, 'features')}
                         >
                             Features
@@ -61,7 +81,7 @@ const Navbar = () => {
                     <li>
                         <a
                             href="#how-it-works"
-                            className="nav-link"
+                            className={`nav-link ${activeSection === 'how-it-works' ? 'active' : ''}`}
                             onClick={(e) => handleNavClick(e, 'how-it-works')}
                         >
                             How It Works
@@ -70,7 +90,7 @@ const Navbar = () => {
                     <li>
                         <a
                             href="#contact"
-                            className="nav-link"
+                            className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
                             onClick={(e) => handleNavClick(e, 'contact')}
                         >
                             Contact
