@@ -4,15 +4,16 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="nav-container">
-                {/* Logo */}
+                {/* Logo Section */}
                 <div className="nav-logo">
-                    <h2>CampusConnect</h2>
+                    <img src="favicon.png" alt="CampusConnect Logo" className="logo-image" />
+                    <span className="logo-text">CampusConnect</span>
                 </div>
 
                 {/* Navigation Links */}
                 <ul className="nav-menu">
                     <li className="nav-item">
-                        <a href="#home" className="nav-link">Home</a>
+                        <a href="#home" className="nav-link active">Home</a>
                     </li>
                     <li className="nav-item">
                         <a href="#features" className="nav-link">Features</a>
